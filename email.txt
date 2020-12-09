@@ -1,0 +1,10 @@
+select * 
+FROM
+(
+select user_id, item_id, event_time, row_number( ) over (partition by user_id order by event_time DESC) as view_number
+from dsv1069.view_item_events
+) recent_views
+join dsv1069.users
+on users.id = recent_views.user_id
+join dsv1069.items
+on items.id = recent_views.item_id
